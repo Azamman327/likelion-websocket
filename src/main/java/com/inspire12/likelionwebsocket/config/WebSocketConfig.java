@@ -39,16 +39,20 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         this.customHandshakeHandler = customHandshakeHandler;
     }
 
+    /*한 클라이언트에서 다른 클라이언트로 메시지를 라우팅하는데 사용될 메시지 브로커*/
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         // 클라이언트가 구독할 prefix 설정 (예: /topic)
-
+        config.enableSimpleBroker("");
+        config.setApplicationDestinationPrefixes("/topic");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // WebSocket 연결 엔드포인트 등록, SockJS fallback 제공
-
+        registry.addEndpoint("/")
+                .setAllowedOriginPatterns("*")
+                .withSockJS();
     }
 
 
